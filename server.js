@@ -12,9 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files from the public directory
 app.use(express.static('public'));
 
-app.get("/", (req, res) => {
-    res.sendFile("public", "./public/html.html")
-})
+
 
 app.get('/users', async (req, res) => {
     try {

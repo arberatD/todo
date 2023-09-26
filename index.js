@@ -1,7 +1,7 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const bcrypt = require("bcrypt");
-const session = require("express-session");
+import express from "express"
+import bodyParser from "body-parser"
+import bcrypt from "bcrypt"
+import fs from "fs"
 
 const port = 3000;
 const app = express();
@@ -11,26 +11,27 @@ const loginForm = `
 <form method="post" action="/login">
     <label for="name">Name:</label>
     <input name="name" type="text">
-    <label for="pw">Passwort:</label>
+    <label for="pw">Password:</label>
     <input name="pw" type="password">
     <button type="submit">Login</button>
-    <a href="/register">Registrieren</a>
+    <a href="/register">Register</a>
 </form>
 `;
 
-const user = [];
+const users = [];
 
 const registerForm = `
 <form method="post" action="/register">
     <label for="name">Name:</label>
     <input name="name" type="text">
-    <label for="pw">Passwort:</label>
+    <label for="pw">Password:</label>
     <input name="pw" type="password">
-    <label for="confirmPw">Passwort wiederholen:</label>
+    <label for="confirmPw">Confirm Password:</label>
     <input name="confirmPw" type="password">
-    <button type="submit">Registrieren</button>
+    <button type="submit">Register</button>
 </form>
 `;
+
 
 app.get("/", (req, res) => {
     res.send(loginForm);
@@ -40,44 +41,71 @@ app.get("/register", (req, res) => {
     res.send(registerForm);
 });
 
+app.get("/index", (req, res) => {
+    res.sendFile("index.html", {root: "./"})
+})
+
 app.post("/login", (req, res) => {
     const { name, pw } = req.body;
 
-    for (let i = 0; i < user.length; i++) {
-        if (name === user[i].name && bcrypt.compareSync(pw, user[i].hashedPassword)) {
-            res.send(`Login erfolgreich`);
-            return;
+    for (let i = 0; i < users.length; i++) {
+        if (name === users[i].name && bcrypt.compareSync(pw, users[i].hashedPassword)) {
+            res.send(`
+                Login successful. Redirecting in 3 seconds...
+                <script>
+                    setTimeout(() => {
+                        window.location.href = "/index";
+                    }, 3000);
+                </script>
+            `);
+            
+           
         }
     }
-
-    res.send(`Login fehlgeschlagen`);
+    res.send(`Login failed 
+    <script>
+        setTimeout(() => {
+            window.location.href = "/";
+            }, 1000);
+    </script>`);
+    
 });
+
 
 app.post("/register", (req, res) => {
     const { name, pw, confirmPw } = req.body;
 
-    // existence of User
-    for (let i = 0; i < user.length; i++) {
-        if (name === user[i].name) {
-            res.send(`Benutzername bereits vergeben`);
+    // Check if user already exists
+    for (let i = 0; i < users.length; i++) {
+        if (name === users[i].name) {
+            res.send(`Username already taken! <script>
+            setTimeout(() => {
+                window.location.href = "/";
+                }, 1000);
+        </script>`);
             return;
         }
     }
 
-    // password compare
+    // Compare passwords
     if (pw !== confirmPw) {
-        res.send(`Passwörter stimmen nicht überein`);
+        res.send(`Passwords do not match`);
         return;
     }
-
-    // safe hash
-    const saltRounds = 10; // Anzahl der Hashing-Runden
+   
+     // Safely hash password
+    const saltRounds = 10; // Number of hashing rounds
     const hashedPassword = bcrypt.hashSync(pw, saltRounds);
 
-    // New User
-    user.push({ name, hashedPassword });
+    // Create a new user
+    users.push({ name, hashedPassword });
+    
 
-    res.send(`Registrierung abgeschlossen`);
+    res.send(`<script>window.location.href = "/" </script>`)
+
+   
+   
+    
 });
 
 app.listen(port, () => {
