@@ -9,6 +9,48 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const loginForm = `
 <form method="post" action="/login">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 50px;
+}
+
+form {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 300px;
+    margin: auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+}
+
+button {
+    background-color: #007BFF;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
+
     <label for="name">Name:</label>
     <input name="name" type="text">
     <label for="pw">Password:</label>
@@ -22,6 +64,48 @@ const users = [];
 
 const registerForm = `
 <form method="post" action="/register">
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    padding: 50px;
+}
+
+form {
+    background-color: #ffffff;
+    border-radius: 5px;
+    padding: 20px;
+    max-width: 300px;
+    margin: auto;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #cccccc;
+}
+
+button {
+    background-color: #007BFF;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
+
     <label for="name">Name:</label>
     <input name="name" type="text">
     <label for="pw">Password:</label>
@@ -51,22 +135,21 @@ app.post("/login", (req, res) => {
     for (let i = 0; i < users.length; i++) {
         if (name === users[i].name && bcrypt.compareSync(pw, users[i].hashedPassword)) {
             res.send(`
-                Login successful. Redirecting in 3 seconds...
                 <script>
                     setTimeout(() => {
                         window.location.href = "/index";
-                    }, 3000);
+                    }, 0);
                 </script>
             `);
             
            
         }
     }
-    res.send(`Login failed 
+    res.send(`Login failed! You'll be redirected..  
     <script>
         setTimeout(() => {
             window.location.href = "/";
-            }, 1000);
+            }, 3000);
     </script>`);
     
 });
