@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anmelden - Todo App</title>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <h2>Registrierung</h2>
+        <form id="registrationForm">
+            <div>
+                <label for="regUsername">Benutzername:</label>
+                <input type="text" id="regUsername" required>
+            </div>
+            <div>
+                <label for="regPassword">Passwort:</label>
+                <input type="password" id="regPassword" required>
+            </div>
+            <div>
+                <input type="button" value="Registrieren" onclick="registerUser()">
+            </div>
+        </form>
+
+        <h2>Anmelden</h2>
+        <form id="loginForm">
+            <div>
+                <label for="loginUsername">Benutzername:</label>
+                <input type="text" id="loginUsername" required>
+            </div>
+            <div>
+                <label for="loginPassword">Passwort:</label>
+                <input type="password" id="loginPassword" required>
+            </div>
+            <div>
+                <input type="button" value="Anmelden" onclick="loginUser()">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const users = {};
+
+        function simpleHash(password) {
+            let hash = 0;
+            for (let i = 0; i < password.length; i++) {
+                hash = (hash << 5) - hash + password.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return hash.toString();
+        }
+
+        function registerUser() {
+            const username = document.getElementById("regUsername").value;
+            const password = document.getElementById("regPassword").value;
+
+            if (users[username]) {
+                alert('Benutzername bereits vergeben');
+                return;
+            }
+
+            const hashedPassword = simpleHash(password);
+            users[username] = hashedPassword;
+            alert("Registrierung erfolgreich!");
+        }
+
+        function loginUser() {
+    const username = document.getElementById("loginUsername").value;
+    const password = document.getElementById("loginPassword").value;
+    
+    const hashedPassword = simpleHash(password);
+
+    if (users[username] === hashedPassword) {
+        // Weiterleitung zur todo.html, wenn die Anmeldung erfolgreich ist
+        window.location.href = "todo.html";
+    } else {
+        alert("Falscher Benutzername oder Passwort");
+    }
+}
+    </script>
+
+</body>
+
+</html>
