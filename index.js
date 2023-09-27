@@ -5,6 +5,7 @@ import fs from "fs"
 
 const port = 3000;
 const app = express();
+app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const loginForm = `
@@ -159,7 +160,7 @@ app.post("/login", (req, res) => {
     }
     res.send(`
     Login failed! You'll be redirected..  
-    <img src="/public/zonk.jpeg" alt="Hier sollte ein ZONK sein" />
+    <img src="/zonk.jpeg" alt="Hier sollte ein ZONK sein" />
     <script>
         setTimeout(() => {
             window.location.href = "/";
