@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const loginForm = `
 <form method="post" action="/login">
+<form method="post" action="/login" onsubmit="return validateLogin()">
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -46,11 +47,16 @@ button {
     cursor: pointer;
 }
 
+h2, h3 {
+    text-align: center;
+}
+
 button:hover {
     background-color: #0056b3;
 }
 </style>
-
+    <h2>ToDo Liste📃</h2>
+    <h3>Login🔞</h3>
     <label for="name">Name:</label>
     <input name="name" type="text">
     <label for="pw">Password:</label>
@@ -64,6 +70,7 @@ const users = [];
 
 const registerForm = `
 <form method="post" action="/register">
+<form method="post" action="/register" onsubmit="return validateRegister()">
 <style>
 body {
     font-family: Arial, sans-serif;
@@ -101,11 +108,16 @@ button {
     cursor: pointer;
 }
 
+h2, h3 {
+    text-align: center;
+}
+
 button:hover {
     background-color: #0056b3;
 }
 </style>
-
+    <h2>ToDo Liste📃</h2>
+    <h3>Registrierung🚀</h3>
     <label for="name">Name:</label>
     <input name="name" type="text">
     <label for="pw">Password:</label>
@@ -145,13 +157,15 @@ app.post("/login", (req, res) => {
            
         }
     }
-    res.send(`Login failed! You'll be redirected..  
+    res.send(`
+    Login failed! You'll be redirected..  
+    <img src="/public/zonk.jpeg" alt="Hier sollte ein ZONK sein" />
     <script>
         setTimeout(() => {
             window.location.href = "/";
-            }, 3000);
-    </script>`);
-    
+        }, 3000);
+    </script>
+`); 
 });
 
 
