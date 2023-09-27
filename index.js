@@ -160,6 +160,7 @@ app.post("/login", (req, res) => {
     }
     res.send(`
     Login failed! You'll be redirected..  
+    <br>
     <img src="/zonk.jpeg" alt="Hier sollte ein ZONK sein" />
     <script>
         setTimeout(() => {
